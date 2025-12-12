@@ -2540,6 +2540,14 @@ If FILE-PATH is not an image, returns nil."
                    prompt)
      :file-path agent-shell--transcript-file)
 
+    (when-let ((_ (map-elt shell :buffer))
+               (viewport-buffer (agent-shell-viewport--buffer
+                                 :shell-buffer (map-elt shell :buffer)
+                                 :existing-only t)))
+      (with-current-buffer viewport-buffer
+        (agent-shell-viewport-view-mode)
+        (agent-shell-viewport--initialize
+         :prompt  prompt)))
 
     (acp-send-request
      :client (map-elt agent-shell--state :client)
